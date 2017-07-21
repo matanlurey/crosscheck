@@ -11,7 +11,7 @@ import 'package:test/test.dart';
 void main() {
   test('should make a deep copy of a folder', () async {
     final destination = await withCopyOf(
-      p.join('package', 'has_no_error'),
+      p.join('_packages', 'has_no_error'),
       (path) async {
         expect(FileSystemEntity.isDirectorySync(path), isTrue);
         expect(
