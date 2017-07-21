@@ -116,5 +116,8 @@ class PackageRange {
       !constraint.intersect(other.constraint).isEmpty;
 
   @override
+  int get hashCode => name.hashCode ^ constraint.hashCode;
+
+  @override
   String toString() => '{name: $name, constraint: $constraint}';
 }
