@@ -16,7 +16,7 @@ class PackageRange {
       other is PackageRange &&
       name == other.name &&
       !constraint.intersect(other.constraint).isEmpty;
-  
+
   @override
   int get hashCode => name.hashCode ^ constraint.hashCode;
 

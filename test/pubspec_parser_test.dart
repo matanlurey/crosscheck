@@ -1,3 +1,4 @@
+import 'package:crosscheck/src/pub/package_info.dart';
 import 'package:crosscheck/src/pub/pubspec_parser.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'package:test/test.dart';
