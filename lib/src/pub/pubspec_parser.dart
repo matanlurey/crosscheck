@@ -1,6 +1,10 @@
+// Copyright 2017, Google Inc.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
+import 'package:crosscheck/src/pub/package_info.dart';
 import 'package:yaml/yaml.dart';
 import 'package:pub_semver/pub_semver.dart';
-// import 'package:path/path.dart';
 
 /// The parsed contents of a pubspec file.
 ///
@@ -100,24 +104,4 @@ class Pubspec {
     }
     return new VersionConstraint.parse(node.value as String);
   }
-}
-
-/// A package name and constraint.
-class PackageRange {
-  final String name;
-  final VersionConstraint constraint;
-
-  PackageRange(this.name, this.constraint);
-
-  @override
-  bool operator ==(Object other) =>
-      other is PackageRange &&
-      name == other.name &&
-      !constraint.intersect(other.constraint).isEmpty;
-
-  @override
-  int get hashCode => name.hashCode ^ constraint.hashCode;
-
-  @override
-  String toString() => '{name: $name, constraint: $constraint}';
 }
