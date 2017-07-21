@@ -16,9 +16,9 @@ void main(List<String> args) => runLogged<Null>(
       onLog: (record) {
         // TODO: Make logging verbosity configurable and potentially to file.
         if (record.level >= Level.SEVERE) {
-          stderr.writeln(record.message);
+          stderr.writeln('[${record.level}] ${record.message}');
         } else {
-          stdout.writeln(record.message);
+          stdout.writeln('[${record.level}] ${record.message}');
         }
       },
     );

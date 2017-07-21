@@ -1,0 +1,6 @@
+name: has_analysis_error
+
+dev_dependencies:
+  crosscheck:
+    path:
+      ../../

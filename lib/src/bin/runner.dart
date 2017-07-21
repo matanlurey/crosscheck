@@ -7,7 +7,10 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
+import 'package:path/path.dart' as p;
 
+import '../checks/analyzer.dart';
+import '../common/copying.dart';
 import '../common/logging.dart' as log;
 import 'config.dart';
 import 'version.dart';
@@ -29,6 +32,12 @@ class CrosscheckCommandRunner extends CommandRunner<Null> {
         negatable: false,
         help: 'Print version number.',
       )
+      ..addFlag(
+        'upgrade',
+        defaultsTo: true,
+        negatable: true,
+        help: 'Whether to verify if "pub upgrade" would succeed.',
+      )
       ..addOption(
         'friend',
         allowMultiple: true,
@@ -39,20 +48,34 @@ class CrosscheckCommandRunner extends CommandRunner<Null> {
   @override
   Future<Null> runCommand(ArgResults results) async {
     if (results.rest.isEmpty) {
-      _runDefaultCommand(results);
-      return null;
+      return _runDefaultCommand(results);
     }
     return super.runCommand(results);
   }
 
-  void _runDefaultCommand(ArgResults results) {
+  Future<Null> _runDefaultCommand(ArgResults results) async {
     final config = new Crosscheck(
+      checkUpgrade: results['upgrade'] as bool,
       friends: results['friend'] as List<String>,
     );
     log.info('Running crosscheck...');
-    if (config.friends.isNotEmpty) {
-      log.fine('Will verify friends: \n  - ${config.friends.join('\n  - ')}');
+    if (config.checkUpgrade) {
+      final analyzer = const DartAnalyzer();
+      log.fine('Attempting "pub upgrade"...');
+      await withCopyOf<Null>(p.current, (path) async {
+        // TODO: Add the actual pub upgrade logic here.
+        print('Path: $path');
+        final results = await analyzer.analyze(path);
+        if (results.isEmpty) {
+          print('No analysis issues.');
+        } else {
+          print('Results: \n  - ${results.join('\n  - ')}');
+        }
+      });
     }
-    // TODO: Actually do something.
+    if (config.friends.isNotEmpty) {
+      log.fine('Verifying friends...');
+      throw new UnimplementedError();
+    }
   }
 }
