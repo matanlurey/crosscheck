@@ -1,0 +1,16 @@
+name: crosscheck
+description: >
+  Automated Dependency Management for Dart.
+version: 0.1.0
+authors:
+  - Dart Team <misc@dartlang.org>
+homepage: https://github.com/matanlurey/crosscheck
+
+environment:
+  sdk: '>=1.24.0 <2.0.0-dev.infinity'
+
+dev_dependencies:
+  test:
+
+executables:
+  crosscheck:
