@@ -16,14 +16,20 @@ Future<T> withCopyOf<T>(
   Future<T> run(String path), {
   String destination,
 }) async {
-  destination ??= Directory.systemTemp.createTempSync().path;
+  if (destination == null) {
+    final temp = Directory.systemTemp.createTempSync().path;
+    destination = p.join(
+      temp,
+      p.basenameWithoutExtension(path),
+    );
+  }
   final source = new Directory(path);
   if (!source.existsSync()) {
     throw new ArgumentError('No directory found at $path.');
   }
   await _copy(path, destination);
   final result = await run(destination);
-  await new Directory(destination).delete(recursive: true);
+  // await new Directory(destination).delete(recursive: true);
   return result;
 }
 

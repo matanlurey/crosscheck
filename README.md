@@ -2,6 +2,8 @@
 
 Automated Dependency Management for Dart.
 
+_**WORK IN PROGRESS**: The following usage details are speculative._
+
 ## Usage
 
 `crosscheck` is a command-line tool for automating checks that your

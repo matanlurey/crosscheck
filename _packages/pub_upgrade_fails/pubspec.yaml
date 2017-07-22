@@ -1,0 +1,7 @@
+name: pub_upgrade_fails
+
+dependencies:
+  build: '>=0.6.0 <1.0.0'
+
+# dependency_overrides:
+#  build: 0.6.0

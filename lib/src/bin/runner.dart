@@ -12,6 +12,7 @@ import 'package:path/path.dart' as p;
 import '../checks/analyzer.dart';
 import '../common/copying.dart';
 import '../common/logging.dart' as log;
+import '../pub/pub_cli.dart';
 import 'config.dart';
 import 'version.dart';
 
@@ -31,6 +32,12 @@ class CrosscheckCommandRunner extends CommandRunner<Null> {
         },
         negatable: false,
         help: 'Print version number.',
+      )
+      ..addOption(
+        'path',
+        defaultsTo: p.current,
+        abbr: 'p',
+        help: 'Path to the pub package to check.',
       )
       ..addFlag(
         'upgrade',
@@ -61,15 +68,26 @@ class CrosscheckCommandRunner extends CommandRunner<Null> {
     log.info('Running crosscheck...');
     if (config.checkUpgrade) {
       final analyzer = const DartAnalyzer();
+      final pub = const PubCli();
       log.fine('Attempting "pub upgrade"...');
-      await withCopyOf<Null>(p.current, (path) async {
-        // TODO: Add the actual pub upgrade logic here.
-        print('Path: $path');
-        final results = await analyzer.analyze(path);
+      await withCopyOf<Null>(results['path'] as String, (path) async {
+        log.fine('Running checks on "$path"');
+        var results = await analyzer.analyze(path);
+        if (results.isNotEmpty) {
+          log.severe(''
+              'Analysis errors before "pub upgrade".:'
+              '\n  - ${results.join('\n  - ')}');
+          exitCode = 1;
+          return;
+        }
+        // ignore: prefer_interpolation_to_compose_strings
+        log.fine('pub upgrade: \n${await pub.pubUpgrade(path)}');
+        log.fine('pub get: \n${await pub.get(path)}');
+        results = await analyzer.analyze(path);
         if (results.isEmpty) {
-          print('No analysis issues.');
+          log.info('No analysis issues.');
         } else {
-          print('Results: \n  - ${results.join('\n  - ')}');
+          log.severe('Results: \n  - ${results.join('\n  - ')}');
         }
       });
     }

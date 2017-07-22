@@ -21,10 +21,14 @@ class DartAnalyzer {
   ///
   /// This varies from project to project based on _analysis options_.
   Future<Iterable<AnalysisResult>> analyze(String path) async {
-    final result = await Process.run(_executable, [
-      '--format=machine',
-      path,
-    ]);
+    final result = await Process.run(
+      _executable,
+      [
+        '--format=machine',
+        '.',
+      ],
+      workingDirectory: path,
+    );
     return const LineSplitter().convert(result.stderr as String).map((line) {
       final parts = line.split('|');
       var type = AnalysisResultType.unknown;

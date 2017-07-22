@@ -15,10 +15,11 @@ void main() {
       (path) async {
         expect(FileSystemEntity.isDirectorySync(path), isTrue);
         expect(
-            FileSystemEntity.isFileSync(
-              p.join(path, 'lib', 'has_no_error.dart'),
-            ),
-            isTrue);
+          FileSystemEntity.isFileSync(
+            p.join(path, 'lib', 'has_no_error.dart'),
+          ),
+          isTrue,
+        );
         return path;
       },
     );
