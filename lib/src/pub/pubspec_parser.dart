@@ -54,7 +54,6 @@ class Pubspec {
 
   /// The package's dependencies.
   List<PackageRange> get dependencies {
-    print(fields['dependencies']);
     _dependencies ??=
         _parseDependencies('dependencies', fields.nodes['dependencies']);
     return _dependencies;

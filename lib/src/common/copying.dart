@@ -29,7 +29,7 @@ Future<T> withCopyOf<T>(
   }
   await _copy(path, destination);
   final result = await run(destination);
-  // await new Directory(destination).delete(recursive: true);
+  await new Directory(destination).delete(recursive: true);
   return result;
 }
 

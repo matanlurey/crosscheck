@@ -82,7 +82,6 @@ class CrosscheckCommandRunner extends CommandRunner<Null> {
         }
         // ignore: prefer_interpolation_to_compose_strings
         log.fine('pub upgrade: \n${await pub.pubUpgrade(path)}');
-        log.fine('pub get: \n${await pub.get(path)}');
         results = await analyzer.analyze(path);
         if (results.isEmpty) {
           log.info('No analysis issues.');

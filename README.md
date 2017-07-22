@@ -47,6 +47,23 @@ If you work on an end-user package or project, you may want to know when it is
 safe or necessary to _expand_ or _contract_ your accepted sem-ver range on your
 dependencies. You can use `crosscheck` to automate it:
 
+#### Check "`pub upgrade`"
+
 ```bash
 $ pub run crosscheck
 ```
+
+By default, this copies your package, runs `pub upgrade`, and then runs the
+analyzer to see if any errors occurred after versions are increased.
+
+#### Check if you can increase your sem-ver constraint
+
+**NOT YET ENABLED.**
+
+```bash
+$ pub run crosscheck expand
+```
+
+## Known issues
+
+* Local packages (i.e. with `path: ...` are not supported)
