@@ -51,5 +51,18 @@ void main() {
           ]));
       expect(pubspec.version, new VersionConstraint.parse(expectedMainVersion));
     });
+
+    test('produces a minimal yaml from toString()', () {
+      final yaml = loadYaml(testYamlFile) as YamlMap;
+      final pubspec = new Pubspec(yaml);
+      final minimal = loadYaml(pubspec.toString()) as YamlMap;
+
+      expect(minimal['name'], 'crosscheck');
+      expect(minimal['dependencies'], {
+        'yaml': '$expectedVersion',
+        'pub_semver': '$expectedVersion',
+        'path': '$expectedVersion',
+      });
+    });
   });
 }

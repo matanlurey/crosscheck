@@ -66,7 +66,11 @@ class PubCli {
     }
     final newMap = new Map<String, Object>.from(pubspec.fields);
     newMap['dependencies'] = newDeps;
-    final newRaw = newMap.toString();
-    info('Upgraded pubspec: $newRaw');
+    final newPubspec = new YamlMap.wrap(newMap);
+    if (dryRun) {
+      info('Would pubspec: ${newPubspec.toString()}');
+      return;
+    }
+    await new File('$pubspec.yaml').writeAsString(newPubspec.toString());
   }
 }

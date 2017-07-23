@@ -66,6 +66,9 @@ class Pubspec {
     return _devDependencies;
   }
 
+  /// The package description.
+  String get description => fields['description'] as String;
+
   /// Parses the dependency field named [field], and returns the corresponding
   /// list of dependencies.
   List<PackageRange> _parseDependencies(String field, YamlNode node) {
@@ -102,5 +105,23 @@ class Pubspec {
       throw new Exception('A version constraint must be a  string');
     }
     return new VersionConstraint.parse(node.value as String);
+  }
+
+  /// Produces the minimal pubspec needed for crosscheck.
+  @override
+  String toString() {
+    final _buffer = new StringBuffer()
+      ..writeln('name: $name')
+      ..writeln()
+      ..writeln('dependencies:');
+    for (var dep in dependencies) {
+      _buffer.writeln('  ${dep.name}: ${dep.constraint}');
+    }
+    _buffer..writeln()..writeln('dev_dependencies:');
+
+    for (var dep in devDependencies) {
+      _buffer.writeln('  ${dep.name}: ${dep.constraint}');
+    }
+    return _buffer.toString();
   }
 }
